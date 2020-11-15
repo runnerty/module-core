@@ -91,8 +91,8 @@ module.exports = consoleNotifier;
 
 
 [Runnerty]: http://www.runnerty.io
-[downloads-image]: https://img.shields.io/npm/dm/@runnerty/notifier-module.svg
-[npm-url]: https://www.npmjs.com/package/@runnerty/notifier-module
-[npm-image]: https://img.shields.io/npm/v/@runnerty/notifier-module.svg
-[david-badge]: https://david-dm.org/runnerty/notifier-module.svg
-[david-badge-url]: https://david-dm.org/runnerty/notifier-module
+[downloads-image]: https://img.shields.io/npm/dm/@runnerty/module-core.svg
+[npm-url]: https://www.npmjs.com/package/@runnerty/module-core
+[npm-image]: https://img.shields.io/npm/v/@runnerty/module-core.svg
+[david-badge]: https://david-dm.org/runnerty/module-core.svg
+[david-badge-url]: https://david-dm.org/runnerty/module-core
