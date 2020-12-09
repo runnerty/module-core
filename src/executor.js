@@ -13,7 +13,10 @@ class Executor {
 
     while (paramsLength--) {
       if (params[paramsLength] === 'type') {
-        this.logger.log('error', `Params of "${args.process.id}" contains no allowed "type" parameter, will be ignored.`);
+        this.logger.log(
+          'error',
+          `Params of "${args.process.id}" contains no allowed "type" parameter, will be ignored.`
+        );
       } else {
         this[params[paramsLength]] = args.process.exec[params[paramsLength]];
       }

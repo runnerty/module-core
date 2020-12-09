@@ -8,7 +8,7 @@ class Notifier {
   constructor(args) {
     this.notification = args.notification;
     this.recursiveObjectInterpreter = args.recursiveObjectInterpreter;
-    this.checkNotifierParams = args.checkNotifierParams,
+    this.checkNotifierParams = args.checkNotifierParams;
     this.runtime = args.runtime;
     this.logger = args.logger;
     this.config = args.notification.config;
@@ -85,7 +85,7 @@ class Notifier {
       const qnrParams = {
         runtime: this.runtime,
         logger: this.logger
-      }
+      };
       const _qnr = new qnr(qnrParams);
       await _qnr.queue(this, notifToQueue, list);
     } else {
@@ -93,7 +93,7 @@ class Notifier {
       const qnmParams = {
         runtime: this.runtime,
         logger: this.logger
-      }
+      };
       const _qnm = new qnm(qnmParams);
       await _qnm.queue(this, notifToQueue, list);
     }
