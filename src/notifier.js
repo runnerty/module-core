@@ -66,11 +66,11 @@ class Notifier {
 
   async getValues(values) {
     let notifValues = this.notification;
-    Object.assign(notifValues, notifValues.config);
+    Object.assign(notifValues, this.config);
     delete notifValues.config;
     try {
       const _values = await interpreter(
-        this.notification,
+        notifValues,
         values,
         undefined,
         this.runtime.config?.interpreter_max_size,

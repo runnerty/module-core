@@ -266,7 +266,13 @@ class Executor {
       if (this.process.exec.type && configValues.type) {
         values.type = configValues.type;
       }
-      const repacedValues = await interpreter(values, this.process.values());
+      const repacedValues = await interpreter(
+        values,
+        this.process.values(),
+        undefined,
+        this.runtime.config?.interpreter_max_size,
+        this.runtime.config?.global_values
+      );
       return repacedValues;
     } catch (err) {
       this.logger.log('error', 'Execution - Method getValues / loadExecutorConfig:', err);
