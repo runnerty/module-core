@@ -1,11 +1,12 @@
 'use strict';
 
+const interpreter = require('@runnerty/runnerty-interpreter');
+
 class Trigger {
   constructor(args) {
     this.queue = args.queue;
     this.runtime = args.runtime;
     this.checkCalendar = args.checkCalendar;
-    this.recursiveObjectInterpreter = args.recursiveObjectInterpreter;
     this.logger = args.logger;
     this.chain = args.chain;
     this.params = args.params;
@@ -16,7 +17,7 @@ class Trigger {
 
   async init() {
     try {
-      this.params = await this.recursiveObjectInterpreter(this.params, this.chain.values());
+      this.params = await interpreter(this.params, this.chain.values(), undefined, this.runtime.config?.interpreter_max_size, this.runtime.config?.global_values);
       // SERVER:
       if (this.params.server) {
         if (this.runtime.servers[this.params.server.id]) {
@@ -96,7 +97,7 @@ class Trigger {
 
   async getParamValues() {
     try {
-      const values = await this.recursiveObjectInterpreter(this.chain.triggers, this.chain.values());
+      const values = await interpreter(this.params, this.chain.values(), undefined, this.runtime.config?.interpreter_max_size, this.runtime.config?.global_values);
       return values;
     } catch (err) {
       this.logger.log('error', `Trigger - Method getParamValues: ${err}`);
