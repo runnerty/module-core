@@ -1,6 +1,6 @@
 'use strict';
 
-const interpreter = require('@runnerty/runnerty-interpreter');
+const interpreter = require('@runnerty/interpreter-core');
 
 class Trigger {
   constructor(args) {
@@ -17,7 +17,13 @@ class Trigger {
 
   async init() {
     try {
-      this.params = await interpreter(this.params, this.chain.values(), undefined, this.runtime.config?.interpreter_max_size, this.runtime.config?.global_values);
+      this.params = await interpreter(
+        this.params,
+        this.chain.values(),
+        undefined,
+        this.runtime.config?.interpreter_max_size,
+        this.runtime.config?.global_values
+      );
       // SERVER:
       if (this.params.server) {
         if (this.runtime.servers[this.params.server.id]) {
@@ -97,7 +103,13 @@ class Trigger {
 
   async getParamValues() {
     try {
-      const values = await interpreter(this.params, this.chain.values(), undefined, this.runtime.config?.interpreter_max_size, this.runtime.config?.global_values);
+      const values = await interpreter(
+        this.params,
+        this.chain.values(),
+        undefined,
+        this.runtime.config?.interpreter_max_size,
+        this.runtime.config?.global_values
+      );
       return values;
     } catch (err) {
       this.logger.log('error', `Trigger - Method getParamValues: ${err}`);

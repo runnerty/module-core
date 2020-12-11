@@ -4,7 +4,7 @@ const ms = require('millisecond');
 const lodash = require('lodash');
 
 const stringify = require('json-stringify-safe');
-const interpreter = require('@runnerty/runnerty-interpreter');
+const interpreter = require('@runnerty/interpreter-core');
 
 class Executor {
   constructor(args) {
@@ -238,7 +238,13 @@ class Executor {
     }
 
     try {
-      const replacedValues = await interpreter(input, replacerValues, _options, this.runtime.config?.interpreter_max_size, this.runtime.config?.global_values);
+      const replacedValues = await interpreter(
+        input,
+        replacerValues,
+        _options,
+        this.runtime.config?.interpreter_max_size,
+        this.runtime.config?.global_values
+      );
       return replacedValues;
     } catch (err) {
       this.logger.log('error', 'Execution - Method getValues:', err);
@@ -273,7 +279,13 @@ class Executor {
 
   async getParamValues() {
     try {
-      const res = await interpreter(this.process.exec, this.process.values(), undefined, this.runtime.config?.interpreter_max_size, this.runtime.config?.global_values);
+      const res = await interpreter(
+        this.process.exec,
+        this.process.values(),
+        undefined,
+        this.runtime.config?.interpreter_max_size,
+        this.runtime.config?.global_values
+      );
       return res;
     } catch (err) {
       this.logger.log('error', 'Execution - Method getParamValues:', err);
@@ -287,7 +299,13 @@ class Executor {
   async getConfigValues() {
     try {
       const configValues = await this.chain.loadExecutorConfig();
-      const replacedValues = await interpreter(configValues, this.process.values(), undefined, this.runtime.config?.interpreter_max_size, this.runtime.config?.global_values);
+      const replacedValues = await interpreter(
+        configValues,
+        this.process.values(),
+        undefined,
+        this.runtime.config?.interpreter_max_size,
+        this.runtime.config?.global_values
+      );
       return replacedValues;
     } catch (err) {
       this.logger.log('error', 'Execution - Method getConfigValues:', err);
@@ -418,7 +436,13 @@ class Executor {
   async applyConditionOuputFilter(condition, output) {
     const item = Object.keys(condition)[0];
     const operator = Object.keys(condition[item])[0];
-    const value = await interpreter(condition[item][operator], undefined, undefined, this.runtime.config?.interpreter_max_size, this.runtime.config?.global_values);
+    const value = await interpreter(
+      condition[item][operator],
+      undefined,
+      undefined,
+      this.runtime.config?.interpreter_max_size,
+      this.runtime.config?.global_values
+    );
     switch (operator) {
       case '$eq':
         return output.filter(i => i[item] == value);

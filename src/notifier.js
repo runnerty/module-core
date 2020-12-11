@@ -3,7 +3,7 @@
 const qnm = require('../lib/queue-notifications-memory');
 const qnr = require('../lib/queue-notifications-redis');
 const crypto = require('crypto');
-const interpreter = require('@runnerty/runnerty-interpreter');
+const interpreter = require('@runnerty/interpreter-core');
 
 class Notifier {
   constructor(args) {
@@ -69,7 +69,13 @@ class Notifier {
     Object.assign(notifValues, notifValues.config);
     delete notifValues.config;
     try {
-      const _values = await interpreter(this.notification, values, undefined, this.runtime.config?.interpreter_max_size, this.runtime.config?.global_values);
+      const _values = await interpreter(
+        this.notification,
+        values,
+        undefined,
+        this.runtime.config?.interpreter_max_size,
+        this.runtime.config?.global_values
+      );
       return _values;
     } catch (err) {
       this.logger.log('error', `getValues Notifier: ${err}`);
