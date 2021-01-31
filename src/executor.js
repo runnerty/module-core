@@ -441,14 +441,26 @@ class Executor {
 
   async applyConditionOuputFilter(condition, output) {
     const item = Object.keys(condition)[0];
-    const operator = Object.keys(condition[item])[0];
+    let valueOriginal = '';
+    let operator = '';
+
+    if (condition[item] instanceof Object) {
+      operator = Object.keys(condition[item])[0];
+      valueOriginal = condition[item][operator];
+    } else {
+      // Condition not set, equal to {"$eq": VALUE}
+      operator = '$eq';
+      valueOriginal = condition[item];
+    }
+
     const value = await interpreter(
-      condition[item][operator],
+      valueOriginal,
       undefined,
       undefined,
       this.runtime.config?.interpreter_max_size,
       this.runtime.config?.global_values
     );
+
     switch (operator) {
       case '$eq':
         return output.filter(i => i[item] == value);
