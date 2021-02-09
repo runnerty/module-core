@@ -85,8 +85,8 @@ class Executor {
   }
 
   kill(params, reason, options) {
-    this.logger.log('warn', this.id, 'killed: ', reason);
-    this.process.execute_err_return = this.id + ' - killed: ' + reason;
+    this.logger.log('warn', this.processId, 'killed: ', reason);
+    this.process.execute_err_return = this.processId + ' - killed: ' + reason;
     this.process.msg_output = '';
     this.end(options);
   }

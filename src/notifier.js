@@ -8,6 +8,7 @@ const interpreter = require('@runnerty/interpreter-core');
 class Notifier {
   constructor(args) {
     this.notification = args.notification;
+    this.id = args.notification.id;
     this.checkNotifierParams = args.checkNotifierParams;
     this.runtime = args.runtime;
     this.logger = args.logger;
@@ -15,14 +16,13 @@ class Notifier {
   }
 
   async init() {
-    const self = this;
     try {
-      if (!self.notification.type && self.notification.config.type) {
-        self.notification.type = self.notification.config.type;
+      if (!this.notification.type && this.notification.config.type) {
+        this.notification.type = this.notification.config.type;
       }
-      self.uId = await self.getUid();
-      await self.checkNotifierParams(self.notification);
-      return self;
+      this.uId = await this.getUid();
+      await this.checkNotifierParams(this.notification);
+      return this;
     } catch (err) {
       throw err;
     }

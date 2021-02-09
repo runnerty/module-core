@@ -35,7 +35,7 @@ class Trigger {
       }
       return this;
     } catch (err) {
-      this.logger.log('error', `init Notification:`, err);
+      this.logger.log('error', `init Trigger:`, err);
       throw err;
     }
   }
@@ -89,7 +89,7 @@ class Trigger {
         if (dateEnableOnDate) start = true;
       } catch (err) {
         start = false;
-        logger.log('debug', `Chain ${this.id} not started: Date not enable in calendar.`);
+        logger.log('debug', `Chain ${this.chain.id} not started: Date not enable in calendar.`);
         throw err;
       }
     } else {
