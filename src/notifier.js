@@ -55,7 +55,7 @@ class Notifier {
 
     switch (options.end) {
       case 'error':
-        logger.log('error', options.messageLog);
+        this.logger.log('error', options.messageLog);
         this.reject(options.messageLog || '');
         break;
       default:
