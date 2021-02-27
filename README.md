@@ -7,16 +7,17 @@
 
 [![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Dependency Status][david-badge]][david-badge-url]
 <a href="#badge">
-  <img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg">
+<img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg">
 </a>
 
 # Runnerty: Module Core
+
 This module exposes the classes that Runnerty modules should extend from.
 
-
 ### Trigger example:
+
 ```javascript
-const Trigger = require("@runnerty/module-core").Trigger;
+const Trigger = require('@runnerty/module-core').Trigger;
 
 class intervalTrigger extends Trigger {
   constructor(chain, params) {
@@ -42,8 +43,9 @@ module.exports = intervalTrigger;
 ```
 
 ### Executor example:
+
 ```javascript
-const Executor = require("@runnerty/module-core").Executor;
+const Executor = require('@runnerty/module-core').Executor;
 
 class greetingExecutor extends Executor {
   constructor(process) {
@@ -70,6 +72,7 @@ module.exports = greetingExecutor;
 ```
 
 ### Notifier example:
+
 ```javascript
 const Notifier = require('@runnerty/module-core').Notifier;
 
@@ -89,8 +92,7 @@ class consoleNotifier extends Notifier {
 module.exports = consoleNotifier;
 ```
 
-
-[Runnerty]: http://www.runnerty.io
+[runnerty]: http://www.runnerty.io
 [downloads-image]: https://img.shields.io/npm/dm/@runnerty/module-core.svg
 [npm-url]: https://www.npmjs.com/package/@runnerty/module-core
 [npm-image]: https://img.shields.io/npm/v/@runnerty/module-core.svg

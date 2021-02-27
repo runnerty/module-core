@@ -65,7 +65,7 @@ class Notifier {
   }
 
   async getValues(values) {
-    let notifValues = this.notification;
+    const notifValues = this.notification;
     Object.assign(notifValues, this.config);
     delete notifValues.config;
     try {
@@ -86,7 +86,7 @@ class Notifier {
   async queue(listName, notifToQueue) {
     const list = this.id + (listName ? '_' + listName : '');
     // QUEUE REDIS;
-    if (this.runtime.config.queueNotifiersExternal && runtime.config.queueNotifiersExternal === 'redis') {
+    if (this.runtime.config.queueNotifiersExternal && this.runtime.config.queueNotifiersExternal === 'redis') {
       //REDIS QUEUE:
       const qnrParams = {
         runtime: this.runtime,
