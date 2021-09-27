@@ -37,30 +37,20 @@ class Notifier {
     }
   }
 
-  sendMain(notification) {
-    return new Promise((resolve, reject) => {
-      this.resolve = resolve;
-      this.reject = reject;
-      this.send(notification);
-    });
+  async sendMain(notification) {
+    await this.send(notification);
   }
 
   send() {
     this.logger.log('error', 'Method send (notification) must be rewrite in child class');
   }
 
-  end(options) {
+  async end(options) {
     if (!options) options = {};
     options.end = options.end || 'end';
 
-    switch (options.end) {
-      case 'error':
-        this.logger.log('error', options.messageLog);
-        this.reject(options.messageLog || '');
-        break;
-      default:
-        this.resolve();
-        break;
+    if (options.end === 'error') {
+      this.logger.log('error', options.messageLog);
     }
   }
 
@@ -106,15 +96,13 @@ class Notifier {
   }
 
   async getUid() {
-    return new Promise((resolve, reject) => {
-      crypto.randomBytes(16, (err, buffer) => {
-        if (err) {
-          this.logger.log('error', `setUid Notifier: ${err}`);
-          reject(err);
-        } else {
-          resolve(this.id + '_' + buffer.toString('hex'));
-        }
-      });
+    crypto.randomBytes(16, (err, buffer) => {
+      if (err) {
+        this.logger.log('error', `setUid Notifier: ${err}`);
+        throw new Error(`setUid Notifier: ${err}`);
+      } else {
+        return this.id + '_' + buffer.toString('hex');
+      }
     });
   }
 }
