@@ -330,6 +330,7 @@ class Executor {
     function _iterateObject(key, object2KV) {
       // Si el objeto no está vacio:
       if (Object.keys(object2KV).length) {
+        res[key] = object2KV;
         // Recursive call to obtain key / value of the entire object tree:
         const sub_res = _self.JSON2KV(object2KV, separator);
         const sub_res_keys = Object.keys(sub_res);
@@ -362,6 +363,8 @@ class Executor {
         if (Array.isArray(objectToPlain[eobjs[i]])) {
           const arrValues = objectToPlain[eobjs[i]];
           const arrLength = arrValues.length;
+          // Add the parent array and not only its elements to the response:
+          res[key] = arrValues;
           for (let z = 0; z < arrLength; z++) {
             // In case the array has objects:
             if (arrValues[z] && typeof arrValues[z] === 'object' && arrValues[z].constructor === Object) {
