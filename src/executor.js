@@ -199,6 +199,18 @@ class Executor {
             this.process.retries_count = (this.process.retries_count || 0) + 1;
             this.process.err_output = '';
             this.process.retry();
+            // Re-arm the process timeout for the retry. It is armed once when
+            // the process starts and cleared at the top of end(), so without
+            // this a retry that hangs would run unbounded.
+            if (this.process.timeout) {
+              this.timeout = setTimeout(
+                () => {
+                  this.killMain('timeout', { end: this.process.timeout.action });
+                  this.process.time_out();
+                },
+                ms('' + this.process.timeout.delay)
+              );
+            }
             this.execMain(this.resolve, this.reject);
           }, ms(this.process.retry_delay));
         } else {
