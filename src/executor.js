@@ -55,11 +55,22 @@ class Executor {
       const values = await this.getValues();
       this.exec(values);
     } catch (err) {
+      // The process settles here without going through end(): clear the
+      // process timeout so it cannot fire later over an already-rejected
+      // process (duplicating errors and leaking an unhandled rejection).
+      this.clearProcessTimeout();
       this.logger.log('error', `execMain Executor:`, err);
       this.process.execute_err_return = `execMain Executor: ${err}`;
       this.process.msg_output = '';
       await this.process.error();
       this.reject(`execMain Executor: ${err}`);
+    }
+  }
+
+  clearProcessTimeout() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
     }
   }
 
@@ -92,9 +103,7 @@ class Executor {
   }
 
   async end(options) {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
+    this.clearProcessTimeout();
 
     if (!options) {
       options = {};
