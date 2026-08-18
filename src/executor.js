@@ -55,11 +55,22 @@ class Executor {
       const values = await this.getValues();
       this.exec(values);
     } catch (err) {
+      // The process settles here without going through end(): clear the
+      // process timeout so it cannot fire later over an already-rejected
+      // process (duplicating errors and leaking an unhandled rejection).
+      this.clearProcessTimeout();
       this.logger.log('error', `execMain Executor:`, err);
       this.process.execute_err_return = `execMain Executor: ${err}`;
       this.process.msg_output = '';
       await this.process.error();
       this.reject(`execMain Executor: ${err}`);
+    }
+  }
+
+  clearProcessTimeout() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
     }
   }
 
@@ -92,9 +103,7 @@ class Executor {
   }
 
   async end(options) {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
+    this.clearProcessTimeout();
 
     if (!options) {
       options = {};
@@ -199,6 +208,18 @@ class Executor {
             this.process.retries_count = (this.process.retries_count || 0) + 1;
             this.process.err_output = '';
             this.process.retry();
+            // Re-arm the process timeout for the retry. It is armed once when
+            // the process starts and cleared at the top of end(), so without
+            // this a retry that hangs would run unbounded.
+            if (this.process.timeout) {
+              this.timeout = setTimeout(
+                () => {
+                  this.killMain('timeout', { end: this.process.timeout.action });
+                  this.process.time_out();
+                },
+                ms('' + this.process.timeout.delay)
+              );
+            }
             this.execMain(this.resolve, this.reject);
           }, ms(this.process.retry_delay));
         } else {
